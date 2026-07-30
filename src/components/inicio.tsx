@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View,Button,Alert,TextInput,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,Button,Alert,TextInput,TouchableOpacity,Image} from 'react-native';
 import { useState } from 'react';
-
+import { StatusBar } from 'expo-status-bar';
 
 
 export default function Inicio() {
@@ -26,8 +26,9 @@ export default function Inicio() {
             <Text style={styles.Text}>Contraseña</Text>
             <TextInput placeholder='contraseña' value={contraseña} onChangeText={setContraseña} secureTextEntry={true} style={styles.textInput}></TextInput>
             <TouchableOpacity style={styles.boton} onPress={handleLogin}>
-                <Text>Iniciar sesión</Text>
+                <Text>Iniciar sesión</Text><Image source={require('./icon_inicio.png')}style={{ width: 20, height: 20, marginLeft: 10 }}/>
             </TouchableOpacity>
+            <StatusBar style="auto" />
         </View>
     );
 }
@@ -72,6 +73,8 @@ const styles = StyleSheet.create({
   },
 
   boton: {
+    borderStyle: 'solid',
+    borderColor: 'black',
     backgroundColor: 'lightblue',
     padding: 10,
     borderRadius: 5,
@@ -83,5 +86,8 @@ const styles = StyleSheet.create({
  shadowRadius: 3,
  //sombras android
  elevation: 5,
+ textAlign: 'center',
+ flexDirection: 'row',
+ alignItems: 'center',
   },
 });
