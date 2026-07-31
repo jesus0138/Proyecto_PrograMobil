@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
 
-export default function Inicio(){
+export default function Modulos(){
 return (
 
 
