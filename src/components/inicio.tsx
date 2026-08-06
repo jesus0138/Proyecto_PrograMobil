@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View,Button,Alert,TextInput,TouchableOpacity,Image} from 'react-native';
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import {MaterialIcons,Ionicons} from '@expo/vector-icons';
 
 
 export default function Inicio() {
@@ -20,13 +21,27 @@ export default function Inicio() {
     };
     return (
         <View style={styles.container}>
+          
             <Text style={styles.Text1}>Inicio de sesión</Text>
-            <Text style={styles.Text}>Nombre de usuario o correo</Text>
-            <TextInput placeholder='usuario' value={usuario} onChangeText={setUsuario} style={styles.textInput}></TextInput>
+<Text style={styles.Text}>Nombre de usuario o correo</Text>
+            <View style={styles.iconos}>
+              
+            <TextInput placeholder='usuario' value={usuario} onChangeText={setUsuario} style={styles.textInput}>
+           
+            </TextInput>
+             <MaterialIcons name="person" size={24} color="black" style={styles.ojos}/>
+            </View>
             <Text style={styles.Text}>Contraseña</Text>
-            <TextInput placeholder='contraseña' value={contraseña} onChangeText={setContraseña} secureTextEntry={true} style={styles.textInput}></TextInput>
+           
+           <View style={styles.iconos}>
+             <TextInput placeholder='contraseña' value={contraseña} onChangeText={setContraseña} secureTextEntry={true} style={styles.textInput}></TextInput>
+             <TouchableOpacity style={styles.ojos}>
+            <Ionicons name="eye" size={24} color="black" />
+           </TouchableOpacity>
+           </View>
+           
             <TouchableOpacity style={styles.boton} onPress={handleLogin}>
-                <Text>Iniciar sesión</Text><Image source={require('./icon_inicio.png')}style={{ width: 20, height: 20, marginLeft: 10 }}/>
+                <Text>Iniciar sesión</Text><MaterialIcons name="person" size={24} color="black" />
             </TouchableOpacity>
             <StatusBar style="auto" />
         </View>
@@ -53,6 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: 150,
     textAlign: 'center',
+    
   },
  
 
@@ -89,5 +105,16 @@ const styles = StyleSheet.create({
  textAlign: 'center',
  flexDirection: 'row',
  alignItems: 'center',
+  },
+
+  iconos: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    textAlign: 'center',
+    width: 150,
+  },
+  ojos: {
+    marginLeft: 10,
+    alignItems: 'center',
   },
 });
