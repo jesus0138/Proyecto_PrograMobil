@@ -7,6 +7,7 @@ import {MaterialIcons,Ionicons} from '@expo/vector-icons';
 export default function Inicio() {
     const [usuario, setUsuario] = useState("");
     const [contraseña, setContraseña] = useState("");
+    const [mostrarContraseña, setMostrarContraseña] = useState(false);
 
     const handleLogin = () => {
         
@@ -34,9 +35,9 @@ export default function Inicio() {
             <Text style={styles.Text}>Contraseña</Text>
            
            <View style={styles.iconos}>
-             <TextInput placeholder='contraseña' value={contraseña} onChangeText={setContraseña} secureTextEntry={true} style={styles.textInput}></TextInput>
-             <TouchableOpacity style={styles.ojos}>
-            <Ionicons name="eye" size={24} color="black" />
+             <TextInput placeholder='contraseña' value={contraseña} onChangeText={setContraseña} secureTextEntry={!mostrarContraseña} style={styles.textInput}></TextInput>
+             <TouchableOpacity style={styles.ojos} onPress={() => setMostrarContraseña(!mostrarContraseña)}>
+            <Ionicons name={mostrarContraseña ? "eye-off" : "eye"} size={24} color="black" />
            </TouchableOpacity>
            </View>
            
