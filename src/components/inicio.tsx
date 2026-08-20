@@ -24,7 +24,7 @@ export default function Inicio() {
         <View style={styles.container}>
           
             <Text style={styles.Text1}>Inicio de sesión</Text>
-<Text style={styles.Text}>Nombre de usuario o correo</Text>
+            <Text style={styles.Text}>Nombre de usuario o correo</Text>
             <View style={styles.iconos}>
               
             <TextInput placeholder='usuario' value={usuario} onChangeText={setUsuario} style={styles.textInput}>
