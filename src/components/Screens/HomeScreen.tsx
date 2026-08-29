@@ -1,4 +1,5 @@
 import {StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import React from 'react';
 import {StatusBar} from 'expo-status-bar';
 import {MaterialIcons} from '@expo/vector-icons';
 

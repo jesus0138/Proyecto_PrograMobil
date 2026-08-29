@@ -3,6 +3,9 @@ import { StyleSheet, Text, View,Button,Alert,TextInput} from 'react-native';
 import { useState } from 'react';
 import Inicio from './src/components/inicio';
 import DashBoard from './src/components/DashBoard';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { AppNavigator } from './src/components/Navigation/AppNavigator';
 export default function App() {
   
   return (

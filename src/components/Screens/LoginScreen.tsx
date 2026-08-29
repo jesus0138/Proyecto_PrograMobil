@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 import { useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
