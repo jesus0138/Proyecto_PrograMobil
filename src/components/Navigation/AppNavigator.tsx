@@ -4,6 +4,7 @@ import LoginScreen from '../Screens/LoginScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import DashBoard from '../DashBoard';
 
+
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
