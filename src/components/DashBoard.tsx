@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View,Button,Alert,TextInput,TouchableOpacity,Image} from 'react-native';
 import { useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 
 
@@ -7,8 +8,8 @@ export default function Modulos(){
 return (
 
 
-        <View style={styles.container2}>
-           <Text style={styles.Titulo}>Inventario</Text> 
+<View style={styles.container2}>
+<Text style={styles.Titulo}>Inventario</Text> 
 
                      <TouchableOpacity style={styles.boton} >
 <Text style={styles.boton}>Asignaciones</Text >

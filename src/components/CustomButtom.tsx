@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View,Button,Alert,TextInput} from 'react-native';
 import { useState } from 'react';
+import React from 'react';
 
 interface props{
     titulo:string
