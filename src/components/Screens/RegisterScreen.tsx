@@ -6,19 +6,26 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
 
-type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
-export default function LoginScreen({ navigation }: { navigation: LoginScreenNavigationProp }) {
+export default function RegisterScreen({ navigation }: { navigation: RegisterScreenNavigationProp }) {
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
+  const [confirmarContraseña, setConfirmarContraseña] = useState('');
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
+  const [mostrarConfirmarContraseña, setMostrarConfirmarContraseña] = useState(false);
 
-  const handleLogin = () => {
-    if (usuario.trim() === '' || contraseña.trim() === '') {
-      Alert.alert('Campos incompletos', 'Por favor, ingrese su usuario y contraseña.');
+  const handleRegister = () => {
+    if (usuario.trim() === '' || contraseña.trim() === '' || confirmarContraseña.trim() === '') {
+      Alert.alert('Campos incompletos', 'Por favor, complete todos los campos.');
       return;
     }
-    navigation.navigate('Home');
+    if (contraseña !== confirmarContraseña) {
+      Alert.alert('Las contraseñas no coinciden', 'Verifique que ambas contraseñas sean iguales.');
+      return;
+    }
+    // Aquí iría la lógica real de registro (API, Firebase, etc.)
+    navigation.navigate('Login');
   };
 
   return (
@@ -35,20 +42,20 @@ export default function LoginScreen({ navigation }: { navigation: LoginScreenNav
 
         {/* Logo e icono */}
         <View style={styles.logoContainer}>
-          <MaterialIcons name="engineering" size={55} color="white" />
+          <MaterialIcons name="person-add" size={50} color="white" />
         </View>
 
         <Text style={styles.titulo}>Control Inteligente</Text>
 
         <Text style={styles.subtitulo}>Herramientas y Vehículos en Campo</Text>
 
-        {/* Tarjeta de login */}
+        {/* Tarjeta de registro */}
         <View style={styles.loginCard}>
 
-          <Text style={styles.loginTitulo}>Iniciar Sesión</Text>
+          <Text style={styles.loginTitulo}>Crear Cuenta</Text>
 
           <Text style={styles.loginDescripcion}>
-            Ingresa los datos para acceder al sistema
+            Ingresa tus datos para registrarte en el sistema
           </Text>
 
           {/* Usuario */}
@@ -88,29 +95,47 @@ export default function LoginScreen({ navigation }: { navigation: LoginScreenNav
             </TouchableOpacity>
           </View>
 
+          {/* Confirmar Contraseña */}
+          <Text style={styles.label}>Confirmar contraseña</Text>
+
+          <View style={styles.inputContainer}>
+            <MaterialIcons name="lock-outline" size={23} color="#666" />
+            <TextInput
+              style={styles.input}
+              placeholder="Repita su contraseña"
+              placeholderTextColor="#999"
+              value={confirmarContraseña}
+              onChangeText={setConfirmarContraseña}
+              secureTextEntry={!mostrarConfirmarContraseña}
+            />
+            <TouchableOpacity onPress={() => setMostrarConfirmarContraseña(!mostrarConfirmarContraseña)}>
+              <Ionicons
+                name={mostrarConfirmarContraseña ? 'eye-off' : 'eye'}
+                size={23}
+                color="#666"
+              />
+            </TouchableOpacity>
+          </View>
+
           {/* Botón */}
           <TouchableOpacity
             style={styles.boton}
-            onPress={handleLogin}
+            onPress={handleRegister}
             activeOpacity={0.8}
           >
-            <Text style={styles.botonTexto}>Iniciar Sesión</Text>
-            <MaterialIcons name="login" size={22} color="white" />
+            <Text style={styles.botonTexto}>Crear Cuenta</Text>
+            <MaterialIcons name="person-add" size={22} color="white" />
           </TouchableOpacity>
 
-          <Text style={styles.ayuda}>¿Problemas con el inicio de sesión?</Text>
-
-          <TouchableOpacity>
-            <Text style={styles.enlace}>Contactar al administrador</Text>
-          </TouchableOpacity>
-          <Text style={styles.ayuda}>¿No tienes una cuenta?</Text>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.enlace}>Crear una cuenta</Text>
-          </TouchableOpacity>
+          {/* Enlace a Login */}
+          <View style={styles.registroContainer}>
+            <Text style={styles.registroTexto}>¿Ya tienes una cuenta? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.registroEnlace}>Inicia sesión</Text>
+            </TouchableOpacity>
+          </View>
 
         </View>
-        
 
         {/* Pie de página */}
         <Text style={styles.footer}>Sistema de Control Inteligente</Text>
@@ -222,18 +247,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight: 8,
   },
-  ayuda: {
-    textAlign: 'center',
-    color: '#777',
-    fontSize: 12,
-    marginTop: 22,
+  registroContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 18,
   },
-  enlace: {
-    textAlign: 'center',
-    color: '#4CAF50',
+  registroTexto: {
     fontSize: 13,
+    color: '#777',
+  },
+  registroEnlace: {
+    fontSize: 13,
+    color: '#4CAF50',
     fontWeight: 'bold',
-    marginTop: 5,
   },
   footer: {
     color: '#777',
