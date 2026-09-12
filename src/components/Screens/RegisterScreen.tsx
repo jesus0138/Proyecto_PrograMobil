@@ -12,20 +12,78 @@ export default function RegisterScreen({ navigation }: { navigation: RegisterScr
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
+  const [rolId, setRolId] = useState('');
+  const [procesoId, setProcesoId] = useState('');
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const [mostrarConfirmarContraseña, setMostrarConfirmarContraseña] = useState(false);
+  const [cargando, setCargando] = useState(false);
 
-  const handleRegister = () => {
-    if (usuario.trim() === '' || contraseña.trim() === '' || confirmarContraseña.trim() === '') {
-      Alert.alert('Campos incompletos', 'Por favor, complete todos los campos.');
+  const handleRegister = async () => {
+    if (usuario.trim() === '' || contraseña.trim() === '' || confirmarContraseña.trim() === '' || rolId.trim() === '') {
+      Alert.alert('Campos incompletos', 'Por favor, complete todos los campos obligatorios (usuario, contraseña y rol).');
       return;
     }
     if (contraseña !== confirmarContraseña) {
       Alert.alert('Las contraseñas no coinciden', 'Verifique que ambas contraseñas sean iguales.');
       return;
     }
-    // Aquí iría la lógica real de registro (API, Firebase, etc.)
-    navigation.navigate('Login');
+
+    const rolIdNumero = Number(rolId);
+    if (isNaN(rolIdNumero)) {
+      Alert.alert('Rol inválido', 'El ID de rol debe ser un número.');
+      return;
+    }
+
+    let procesoIdNumero: number | null = null;
+    if (procesoId.trim() !== '') {
+      procesoIdNumero = Number(procesoId);
+      if (isNaN(procesoIdNumero)) {
+        Alert.alert('Proceso inválido', 'El ID de proceso debe ser un número, o déjalo vacío si no aplica.');
+        return;
+      }
+    }
+
+    setCargando(true);
+
+    try {
+      const response = await fetch('http://123.123.123.39:5175/api/Usuario', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombreUsuario: usuario,
+          password: contraseña,
+          rolId: rolIdNumero,
+          procesoId: procesoIdNumero,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorTexto = await response.text();
+        Alert.alert('Error al registrar', errorTexto || 'No se pudo crear la cuenta. Intente de nuevo.');
+        return;
+      }
+
+      setUsuario('');
+      setContraseña('');
+      setConfirmarContraseña('');
+      setRolId('');
+      setProcesoId('');
+
+      Alert.alert(
+        'Cuenta creada',
+        'La cuenta se registró correctamente.',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Login'),
+          },
+        ]
+      );
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo conectar con el servidor');
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
@@ -55,7 +113,7 @@ export default function RegisterScreen({ navigation }: { navigation: RegisterScr
           <Text style={styles.loginTitulo}>Crear Cuenta</Text>
 
           <Text style={styles.loginDescripcion}>
-            Ingresa tus datos para registrarte en el sistema
+            Ingresa los datos para registrar el nuevo usuario
           </Text>
 
           {/* Usuario */}
@@ -117,13 +175,44 @@ export default function RegisterScreen({ navigation }: { navigation: RegisterScr
             </TouchableOpacity>
           </View>
 
+          {/* Rol Id */}
+          <Text style={styles.label}>Rol (ID)</Text>
+
+          <View style={styles.inputContainer}>
+            <MaterialIcons name="badge" size={23} color="#666" />
+            <TextInput
+              style={styles.input}
+              placeholder="Ej. 1"
+              placeholderTextColor="#999"
+              value={rolId}
+              onChangeText={setRolId}
+              keyboardType="numeric"
+            />
+          </View>
+
+          {/* Proceso Id */}
+          <Text style={styles.label}>Proceso (ID) — opcional</Text>
+
+          <View style={styles.inputContainer}>
+            <MaterialIcons name="account-tree" size={23} color="#666" />
+            <TextInput
+              style={styles.input}
+              placeholder="Dejar vacío si no aplica"
+              placeholderTextColor="#999"
+              value={procesoId}
+              onChangeText={setProcesoId}
+              keyboardType="numeric"
+            />
+          </View>
+
           {/* Botón */}
           <TouchableOpacity
             style={styles.boton}
             onPress={handleRegister}
             activeOpacity={0.8}
+            disabled={cargando}
           >
-            <Text style={styles.botonTexto}>Crear Cuenta</Text>
+            <Text style={styles.botonTexto}>{cargando ? 'Creando cuenta...' : 'Crear Cuenta'}</Text>
             <MaterialIcons name="person-add" size={22} color="white" />
           </TouchableOpacity>
 

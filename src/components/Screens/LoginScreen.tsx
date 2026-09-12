@@ -5,6 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { useDispatch } from 'react-redux';
+import { setUsuario as setUsuarioRedux } from '../Store/UsuarioSlices';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -12,14 +14,48 @@ export default function LoginScreen({ navigation }: { navigation: LoginScreenNav
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
-
-  const handleLogin = () => {
-    if (usuario.trim() === '' || contraseña.trim() === '') {
-      Alert.alert('Campos incompletos', 'Por favor, ingrese su usuario y contraseña.');
-      return;
+  const dispatch = useDispatch();
+const handleLogin = async () => {
+    if (usuario.trim() === "" || contraseña.trim() === "") {
+        Alert.alert("Error", "Por favor, ingrese nombre de usuario y contraseña");
+        return;
     }
-    navigation.navigate('Home');
-  };
+
+    try {
+        const response = await fetch('http://123.123.123.39:5175/api/Auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nombreUsuario: usuario,
+                password: contraseña,
+            }),
+        });
+
+        if (!response.ok) {
+            Alert.alert("Error", "Usuario o contraseña incorrectos");
+            return;
+        }
+
+        const data = await response.json();
+        dispatch(setUsuarioRedux({ nombreUsuario: data.nombreUsuario, token: data.token }));
+
+        setUsuario("");
+        setContraseña("");
+
+        Alert.alert(
+            "Inicio de sesión exitoso",
+            `Bienvenido, ${data.nombreUsuario}`,
+            [
+                {
+                    text: "OK",
+                    onPress: () => navigation.navigate('Home'),
+                },
+            ]
+        );
+    } catch (error) {
+        Alert.alert("Error", "No se pudo conectar con el servidor");
+    }
+};
 
   return (
     <KeyboardAvoidingView
