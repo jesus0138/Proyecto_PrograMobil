@@ -2,8 +2,12 @@ import {StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native
 import React from 'react';
 import {StatusBar} from 'expo-status-bar';
 import {MaterialIcons} from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../Navigation/AppNavigator';
 
-export default function HomeScreen() {
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+
+export default function HomeScreen({ navigation }: { navigation: HomeScreenNavigationProp }) {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -43,12 +47,13 @@ export default function HomeScreen() {
         <View style={styles.grid}>
 
           {/* Herramientas */}
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Herramientas')}>
             <View style={styles.iconoCard}>
               <MaterialIcons name="build" size={32} color="white" />
             </View>
             <Text style={styles.cardTitulo}>Herramientas</Text>
             <Text style={styles.cardTexto}>Gestión de herramientas</Text>
+            
           </TouchableOpacity>
 
           {/* Vehículos */}
