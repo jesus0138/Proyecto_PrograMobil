@@ -21,7 +21,8 @@ interface Formulario {
     asignadoPorUsuarioId: string;
 }
 
-const API_URL = 'http://192.168.1.19:5175/api/Carro';
+const API_URL = 'http://192.168.1.19:5175/api/AsignacionCarro';
+
 export default function CarrosScreen({ navigation }: { navigation: CarrosNavigationProp })  {
 
 const [asignaciones, setAsignaciones] = useState<Asignacion[]>([]);
@@ -920,4 +921,3 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-

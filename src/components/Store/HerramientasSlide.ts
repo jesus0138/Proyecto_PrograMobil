@@ -6,6 +6,7 @@ export interface Herramientas {
   marca: string;
   color: string;
   stock: number;
+  disponible: number;
 }
 
 interface HerramientasState {

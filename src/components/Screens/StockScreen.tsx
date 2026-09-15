@@ -20,7 +20,7 @@ export default function StockScreen({ navigation }: { navigation: StockScreenNav
 
   const cargarHerramientas = async () => {
     try {
-      const response = await fetch('http://192.168.1.19:5175/api/Herramienta');
+      const response = await fetch('http://192.168.1.19:5175/api/Herramientas');
 
       if (!response.ok) {
         console.log('Error al cargar herramientas:', response.status);
@@ -83,9 +83,9 @@ export default function StockScreen({ navigation }: { navigation: StockScreenNav
               </View>
 
               <View style={styles.stockBadge}>
-                <Text style={styles.stockNumero}>{herramienta.stock}</Text>
-                <Text style={styles.stockLabel}>stock</Text>
-              </View>
+  <Text style={styles.stockNumero}>{herramienta.disponible}</Text>
+  <Text style={styles.stockLabel}>disponible</Text>
+</View>
             </View>
           ))
         )}
