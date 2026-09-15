@@ -7,6 +7,8 @@ import Herramientas from '../Screens/HerramientasScreen';
 import StockScreen from '../Screens/StockScreen';
 import AsignacionScreen from '../Screens/AsignacionScreen';
 import ReintegroScreen from '../Screens/ReintegroScreen';
+import AsignacionCarros from '../Screens/AsignacionCarros';
+import Carros from '../Screens/Carros';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -17,6 +19,8 @@ export type RootStackParamList = {
   Stock: undefined;
   Asignacion: undefined;
   Reintegro: undefined;
+  AsignacionCarros: undefined;
+  Carros: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -60,6 +64,16 @@ export default function AppNavigator() {
       <Stack.Screen 
         name="Reintegro" 
         component={ReintegroScreen} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="AsignacionCarros" 
+        component={AsignacionCarros} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Carros" 
+        component={Carros} 
         options={{ headerShown: false }}
       />
 

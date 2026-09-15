@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation }: { navigation: HomeScreenNavig
           </TouchableOpacity>
 
           {/* Vehículos */}
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('AsignacionCarros')}>
             <View style={styles.iconoCard}>
               <MaterialIcons name="directions-car" size={32} color="white" />
             </View>
