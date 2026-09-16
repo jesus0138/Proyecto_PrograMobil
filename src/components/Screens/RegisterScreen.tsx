@@ -46,7 +46,7 @@ export default function RegisterScreen({ navigation }: { navigation: RegisterScr
     setCargando(true);
 
     try {
-      const response = await fetch('http://192.168.1.19:5175/api/Usuario', {
+      const response = await fetch('http://192.168.1.19:5000/api/Usuario', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

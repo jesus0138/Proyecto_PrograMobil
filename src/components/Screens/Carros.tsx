@@ -21,7 +21,7 @@ interface Formulario {
     asignadoPorUsuarioId: string;
 }
 
-const API_URL = 'http://192.168.1.19:5175/api/AsignacionCarro';
+const API_URL = 'http://192.168.1.19:5000/api/AsignacionCarro';
 
 export default function CarrosScreen({ navigation }: { navigation: CarrosNavigationProp })  {
 

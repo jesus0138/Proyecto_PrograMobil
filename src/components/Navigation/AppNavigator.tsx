@@ -9,6 +9,8 @@ import AsignacionScreen from '../Screens/AsignacionScreen';
 import ReintegroScreen from '../Screens/ReintegroScreen';
 import AsignacionCarros from '../Screens/AsignacionCarros';
 import Carros from '../Screens/Carros';
+import VerAsignacionesScreen from '../Screens/VerAsignaciones';
+import DetallesAsignacionScreen from '../Screens/DetallesAsignacionScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -21,6 +23,8 @@ export type RootStackParamList = {
   Reintegro: undefined;
   AsignacionCarros: undefined;
   Carros: undefined;
+  VerAsignacionesScreen: undefined;
+    DetallesAsignacionScreen: { asignacion: any }; // Parámetro para pasar la asignación seleccionada
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -76,7 +80,16 @@ export default function AppNavigator() {
         component={Carros} 
         options={{ headerShown: false }}
       />
-
+      <Stack.Screen 
+        name="VerAsignacionesScreen" 
+        component={VerAsignacionesScreen} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="DetallesAsignacionScreen" 
+        component={DetallesAsignacionScreen} 
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

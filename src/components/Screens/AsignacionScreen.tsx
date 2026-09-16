@@ -33,7 +33,7 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
   useEffect(() => {
     const cargarPersonas = async () => {
       try {
-        const response = await fetch('http://192.168.1.19:5175/api/Persona');
+        const response = await fetch('http://192.168.1.19:5000/api/Persona');
         if (!response.ok) {
           console.log('Error al cargar personas:', response.status);
           return;
@@ -79,7 +79,7 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
     setEnviando(true);
 
     try {
-      const response = await fetch('http://192.168.1.19:5175/api/AsignacionHerramienta', {
+      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

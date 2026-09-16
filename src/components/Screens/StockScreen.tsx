@@ -20,7 +20,7 @@ export default function StockScreen({ navigation }: { navigation: StockScreenNav
 
   const cargarHerramientas = async () => {
     try {
-      const response = await fetch('http://192.168.1.19:5175/api/Herramientas');
+      const response = await fetch('http://192.168.1.19:5000/api/Herramientas');
 
       if (!response.ok) {
         console.log('Error al cargar herramientas:', response.status);
