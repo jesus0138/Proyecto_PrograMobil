@@ -14,7 +14,7 @@ import Carros from './Carros';
 //si se usa un celular físico, no usar localhost.
 //ejemplo: const API_URL = 'http://numero de ip/api/Carro';
 
-const API_URL = 'http://192.168.1.19:5000/api/Carro';
+const API_URL = 'http://123.123.123.32:5000/api/Carro';
 type AsignacionNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AsignacionCarros'>;
 interface Carro {
     id: number;

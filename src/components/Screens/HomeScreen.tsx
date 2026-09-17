@@ -66,7 +66,7 @@ export default function HomeScreen({ navigation }: { navigation: HomeScreenNavig
           </TouchableOpacity>
 
           {/* Inventario */}
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('InventarioScreen')}>
             <View style={styles.iconoCard}>
               <MaterialIcons name="inventory" size={32} color="white" />
             </View>
@@ -75,7 +75,7 @@ export default function HomeScreen({ navigation }: { navigation: HomeScreenNavig
           </TouchableOpacity>
 
           {/* Asignaciones */}
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.card} >
             <View style={styles.iconoCard}>
               <MaterialIcons name="assignment" size={32} color="white" />
             </View>

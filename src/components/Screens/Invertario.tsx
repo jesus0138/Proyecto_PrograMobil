@@ -5,12 +5,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
 import VerAsignacionesScreen from './VerAsignaciones';
+type InventarioScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'InventarioScreen'>;
 
-type HerramientasScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Herramientas'>;
-
-export default function HerramientasScreen({ navigation }: { navigation: HerramientasScreenNavigationProp }) {
-  return (
-    <View style={styles.container}>
+export default function InventarioScreen({ navigation }: { navigation: InventarioScreenNavigationProp }){
+return (
+<View style={styles.container}>
       <StatusBar style="dark" />
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
@@ -22,57 +21,41 @@ export default function HerramientasScreen({ navigation }: { navigation: Herrami
           <MaterialIcons name="build" size={50} color="white" />
         </View>
 
-        <Text style={styles.titulo}>Herramientas</Text>
-        <Text style={styles.subtitulo}>Gestión de inventario y asignaciones</Text>
+        <Text style={styles.titulo}>Inventario</Text>
+        <Text style={styles.subtitulo}>Gestión de inventario</Text>
 
-       
-
-        {/* Botón: Asignación */}
+        
+ {/* Botón: Ver Stock */}
         <TouchableOpacity
           style={styles.opcionCard}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('Asignacion')}
+          onPress={() => navigation.navigate('Stock')}
         >
-          <View style={[styles.iconoCircular, { backgroundColor: '#4CAF50' }]}>
-            <MaterialIcons name="assignment-turned-in" size={28} color="white" />
+          <View style={[styles.iconoCircular, { backgroundColor: '#2196F3' }]}>
+            <MaterialIcons name="inventory" size={28} color="white" />
           </View>
           <View style={styles.opcionTexto}>
-            <Text style={styles.opcionTitulo}>Nueva Asignación</Text>
-            <Text style={styles.opcionDescripcion}>Presta una herramienta a un técnico</Text>
+            <Text style={styles.opcionTitulo}>Ver Stock</Text>
+            <Text style={styles.opcionDescripcion}>Consulta cuántas herramientas hay disponibles</Text>
           </View>
           <MaterialIcons name="chevron-right" size={26} color="#999" />
         </TouchableOpacity>
-
-        {/* Botón: Reintegro */}
+{/* Botón: ver Herramientas Dañadas */}
         <TouchableOpacity
           style={styles.opcionCard}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('Reintegro')}
+          onPress={() => navigation.navigate('StockDanadas')}
         >
-          <View style={[styles.iconoCircular, { backgroundColor: '#FF9800' }]}>
-            <MaterialIcons name="assignment-return" size={28} color="white" />
+          <View style={[styles.iconoCircular, { backgroundColor: '#2196F3' }]}>
+            <MaterialIcons name="inventory" size={28} color="white" />
           </View>
           <View style={styles.opcionTexto}>
-            <Text style={styles.opcionTitulo}>Reintegro</Text>
-            <Text style={styles.opcionDescripcion}>Registra la devolución de una herramienta</Text>
+            <Text style={styles.opcionTitulo}>Stock Dañado</Text>
+            <Text style={styles.opcionDescripcion}>Consulta cuántas herramientas hay dañadas</Text>
           </View>
           <MaterialIcons name="chevron-right" size={26} color="#999" />
         </TouchableOpacity>
-{/* Botón: Ver Asignaciones */}
-<TouchableOpacity
-  style={styles.opcionCard}
-  activeOpacity={0.8}
-  onPress={() => navigation.navigate('VerAsignacionesScreen')}
->
-  <View style={[styles.iconoCircular, { backgroundColor: '#9C27B0' }]}>
-    <MaterialIcons name="list-alt" size={28} color="white" />
-  </View>
-  <View style={styles.opcionTexto}>
-    <Text style={styles.opcionTitulo}>Ver Asignaciones</Text>
-    <Text style={styles.opcionDescripcion}>Consulta el historial de préstamos</Text>
-  </View>
-  <MaterialIcons name="chevron-right" size={26} color="#999" />
-</TouchableOpacity>
+        
       </ScrollView>
     </View>
   );
