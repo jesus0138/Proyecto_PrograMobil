@@ -5,8 +5,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
-import { useSelector } from 'react-redux';
-import { RootState } from '../Store/Store';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../Store/Store';
+import { setHerramientas } from '../Store/HerramientasSlide';
 
 type AsignacionScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Asignacion'>;
 
@@ -20,10 +21,11 @@ type Persona = {
 };
 
 export default function AsignacionScreen({ navigation }: { navigation: AsignacionScreenNavigationProp }) {
+  const dispatch = useDispatch<AppDispatch>();
   const herramientas = useSelector((state: RootState) => state.herramientas.lista);
 
   const [personas, setPersonas] = useState<Persona[]>([]);
-  const [cargandoPersonas, setCargandoPersonas] = useState(true);
+  const [cargandoDatos, setCargandoDatos] = useState(true);
 
   const [herramientaId, setHerramientaId] = useState<number | null>(null);
   const [personaId, setPersonaId] = useState<number | null>(null);
@@ -31,23 +33,32 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
   const [enviando, setEnviando] = useState(false);
 
   useEffect(() => {
-    const cargarPersonas = async () => {
+    const cargarDatos = async () => {
       try {
-        const response = await fetch('http://192.168.1.19:5000/api/Persona');
-        if (!response.ok) {
-          console.log('Error al cargar personas:', response.status);
-          return;
+        const [respPersonas, respHerramientas] = await Promise.all([
+          fetch('http://123.123.123.32:5000/api/Persona'),
+          fetch('http://123.123.123.32:5000/api/Herramientas/con-disponibilidad'),
+        ]);
+
+        if (respPersonas.ok) {
+          setPersonas(await respPersonas.json());
+        } else {
+          console.log('Error al cargar personas:', respPersonas.status);
         }
-        const data = await response.json();
-        setPersonas(data);
+
+        if (respHerramientas.ok) {
+          dispatch(setHerramientas(await respHerramientas.json()));
+        } else {
+          console.log('Error al cargar herramientas:', respHerramientas.status);
+        }
       } catch (error) {
-        console.log('Error de conexión al cargar personas:', error);
+        console.log('Error de conexión al cargar datos:', error);
       } finally {
-        setCargandoPersonas(false);
+        setCargandoDatos(false);
       }
     };
 
-    cargarPersonas();
+    cargarDatos();
   }, []);
 
   const handleAsignar = async () => {
@@ -79,7 +90,7 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
     setEnviando(true);
 
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta', {
+      const response = await fetch('http://123.123.123.32:5000/api/AsignacionHerramienta', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -110,7 +121,7 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
     }
   };
 
-  if (cargandoPersonas) {
+  if (cargandoDatos) {
     return (
       <View style={styles.centrado}>
         <ActivityIndicator size="large" color="#4CAF50" />
@@ -194,43 +205,13 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ecefb9',
-  },
-  scrollContainer: {
-    padding: 20,
-    paddingTop: 50,
-    paddingBottom: 30,
-  },
-  centrado: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ecefb9',
-  },
-  cargandoTexto: {
-    marginTop: 10,
-    color: '#666',
-    fontSize: 14,
-  },
-  titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#222',
-    marginBottom: 5,
-  },
-  subtitulo: {
-    fontSize: 13,
-    color: '#666',
-    marginBottom: 25,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 7,
-  },
+  container: { flex: 1, backgroundColor: '#ecefb9' },
+  scrollContainer: { padding: 20, paddingTop: 50, paddingBottom: 30 },
+  centrado: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ecefb9' },
+  cargandoTexto: { marginTop: 10, color: '#666', fontSize: 14 },
+  titulo: { fontSize: 24, fontWeight: 'bold', color: '#222', marginBottom: 5 },
+  subtitulo: { fontSize: 13, color: '#666', marginBottom: 25 },
+  label: { fontSize: 14, fontWeight: 'bold', color: '#333', marginBottom: 7 },
   pickerContainer: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -250,13 +231,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginBottom: 18,
   },
-  input: {
-    flex: 1,
-    height: '100%',
-    marginLeft: 10,
-    color: '#222',
-    fontSize: 14,
-  },
+  input: { flex: 1, height: '100%', marginLeft: 10, color: '#222', fontSize: 14 },
   boton: {
     height: 50,
     backgroundColor: '#4CAF50',
@@ -266,10 +241,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
   },
-  botonTexto: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 8,
-  },
+  botonTexto: { color: 'white', fontSize: 16, fontWeight: 'bold', marginRight: 8 },
 });

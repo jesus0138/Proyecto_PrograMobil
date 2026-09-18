@@ -24,7 +24,7 @@ export default function ReintegroScreen({ navigation }: { navigation: ReintegroS
 
   const cargarActivas = async () => {
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta/activas');
+      const response = await fetch('http://123.123.123.32:5000/api/AsignacionHerramienta/activas');
 
       if (!response.ok) {
         console.log('Error al cargar asignaciones activas:', response.status);
@@ -53,7 +53,7 @@ export default function ReintegroScreen({ navigation }: { navigation: ReintegroS
   const devolver = async (id: number, estado: 'Buena' | 'Dañada') => {
     setProcesandoId(id);
     try {
-      const response = await fetch(`http://192.168.1.19:5000/api/AsignacionHerramienta/${id}/devolver`, {
+      const response = await fetch(`http://123.123.123.32:5000/api/AsignacionHerramienta/${id}/devolver`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ estadoDevolucion: estado }),

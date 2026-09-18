@@ -55,6 +55,21 @@ return (
           </View>
           <MaterialIcons name="chevron-right" size={26} color="#999" />
         </TouchableOpacity>
+        {/* reporte */}
+        <TouchableOpacity
+          style={styles.opcionCard}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('Reporte')}
+        >
+          <View style={[styles.iconoCircular, { backgroundColor: '#2196F3' }]}>
+            <MaterialIcons name="inventory" size={28} color="white" />
+          </View>
+          <View style={styles.opcionTexto}>
+            <Text style={styles.opcionTitulo}>Reporte</Text>
+            <Text style={styles.opcionDescripcion}>Reporte de inventario</Text>
+          </View>
+          <MaterialIcons name="chevron-right" size={26} color="#999" />
+        </TouchableOpacity>
         
       </ScrollView>
     </View>

@@ -25,7 +25,7 @@ export default function VerAsignacionesScreen({ navigation }: { navigation: VerA
 
   const cargarAsignaciones = async () => {
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta');
+      const response = await fetch('http://123.123.123.32:5000/api/AsignacionHerramienta');
 
       if (!response.ok) {
         console.log('Error al cargar asignaciones:', response.status);

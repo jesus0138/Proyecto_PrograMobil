@@ -13,6 +13,7 @@ import VerAsignacionesScreen from '../Screens/VerAsignaciones';
 import DetallesAsignacionScreen from '../Screens/DetallesAsignacionScreen';
 import InventarioScreen from '../Screens/Invertario';
 import StockDanadas from '../Screens/StockDanadas';
+import Reporte from '../Screens/Reporte';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -29,6 +30,7 @@ export type RootStackParamList = {
     DetallesAsignacionScreen: { asignacion: any }; // Parámetro para pasar la asignación seleccionada
   InventarioScreen: undefined;
   StockDanadas: undefined;
+  Reporte: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -102,6 +104,11 @@ export default function AppNavigator() {
       <Stack.Screen 
         name="StockDanadas" 
         component={StockDanadas} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Reporte" 
+        component={Reporte} 
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

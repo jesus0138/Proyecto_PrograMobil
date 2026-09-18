@@ -22,7 +22,7 @@ const handleLogin = async () => {
     }
 
     try {
-        const response = await fetch('http://192.168.1.19:5000/api/Auth', {
+        const response = await fetch('http://123.123.123.32:5000/api/Auth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
