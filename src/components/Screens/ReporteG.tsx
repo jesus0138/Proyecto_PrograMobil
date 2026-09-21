@@ -50,8 +50,8 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
     const cargarListas = async () => {
       try {
         const [respPersonas, respCuadrillas] = await Promise.all([
-          fetch('http://192.168.1.19:5000/api/Persona'),
-          fetch('http://192.168.1.19:5000/api/Cuadrilla'),
+          fetch('http://123.123.123.32:5000/api/Persona'),
+          fetch('http://123.123.123.32:5000/api/Cuadrilla'),
         ]);
 
         if (respPersonas.ok) setPersonas(await respPersonas.json());

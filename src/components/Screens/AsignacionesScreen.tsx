@@ -97,7 +97,7 @@ export default function AsignacionesScreen({ navigation }: { navigation: Asignac
         <TouchableOpacity
           style={styles.opcionCard}
           activeOpacity={0.8}
-          
+          onPress={() => navigation.navigate('HistorialCompleto')}
         >
           <View style={[styles.iconoCircular, { backgroundColor: '#607D8B' }]}>
             <MaterialIcons name="history" size={28} color="white" />

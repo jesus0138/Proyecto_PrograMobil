@@ -18,6 +18,8 @@ import ActivasUnificadas from '../Screens/ActivasUnificadas';
 import ConfirmarReintegroScreen from '../Screens/ConfirmarReintegro';
 import ReintegrosUnificados from '../Screens/ReintegrosUnificados';
 import AsignacionesScreen from '../Screens/AsignacionesScreen';
+import HistorialCompleto from '../Screens/ReporteG';
+
 
 export type RootStackParamList = {
   Login: undefined;
@@ -44,6 +46,8 @@ export type RootStackParamList = {
   };
   ReintegrosUnificados: undefined;
   AsignacionesScreen: undefined;
+  HistorialCompleto: undefined;
+ 
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -142,6 +146,11 @@ export default function AppNavigator() {
       <Stack.Screen 
         name="AsignacionesScreen" 
         component={AsignacionesScreen} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="HistorialCompleto" 
+        component={HistorialCompleto} 
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
