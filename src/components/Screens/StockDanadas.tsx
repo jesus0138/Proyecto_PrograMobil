@@ -31,7 +31,7 @@ export default function StockDanadoScreen({ navigation }: { navigation: StockDan
 
   const cargarDanadas = async () => {
     try {
-      const response = await fetch('http://123.123.123.32:5000/api/AsignacionHerramienta/danadas');
+      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta/danadas');
 
       if (!response.ok) {
         console.log('Error al cargar herramientas dañadas:', response.status);

@@ -26,8 +26,8 @@ export default function StockScreen({ navigation }: { navigation: StockScreenNav
   const cargarHerramientas = async () => {
     try {
       const [responseHerramientas, responseDanadas] = await Promise.all([
-        fetch('http://123.123.123.32:5000/api/Herramientas'),
-        fetch('http://123.123.123.32:5000/api/AsignacionHerramienta/danadas'),
+        fetch('http://192.168.1.19:5000/api/Herramientas'),
+        fetch('http://192.168.1.19:5000/api/AsignacionHerramienta/danadas'),
       ]);
 
       if (!responseHerramientas.ok) {

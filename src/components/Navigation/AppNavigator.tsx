@@ -14,6 +14,10 @@ import DetallesAsignacionScreen from '../Screens/DetallesAsignacionScreen';
 import InventarioScreen from '../Screens/Invertario';
 import StockDanadas from '../Screens/StockDanadas';
 import Reporte from '../Screens/Reporte';
+import ActivasUnificadas from '../Screens/ActivasUnificadas';
+import ConfirmarReintegroScreen from '../Screens/ConfirmarReintegro';
+import ReintegrosUnificados from '../Screens/ReintegrosUnificados';
+import AsignacionesScreen from '../Screens/AsignacionesScreen';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -31,6 +35,15 @@ export type RootStackParamList = {
   InventarioScreen: undefined;
   StockDanadas: undefined;
   Reporte: undefined;
+  ActivasUnificadas: undefined;
+  ConfirmarReintegro: {
+    id: number;
+    tipo: 'herramienta' | 'carro';
+    titulo: string;
+    subtitulo: string;
+  };
+  ReintegrosUnificados: undefined;
+  AsignacionesScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -109,6 +122,26 @@ export default function AppNavigator() {
       <Stack.Screen 
         name="Reporte" 
         component={Reporte} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="ActivasUnificadas" 
+        component={ActivasUnificadas} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="ConfirmarReintegro" 
+        component={ConfirmarReintegroScreen} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="ReintegrosUnificados" 
+        component={ReintegrosUnificados} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="AsignacionesScreen" 
+        component={AsignacionesScreen} 
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

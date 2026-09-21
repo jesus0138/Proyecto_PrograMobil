@@ -36,8 +36,8 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
     const cargarListas = async () => {
       try {
         const [respPersonas, respCuadrillas] = await Promise.all([
-          fetch('http://123.123.123.32:5000/api/Persona'),
-          fetch('http://123.123.123.32:5000/api/Cuadrilla'),
+          fetch('http://192.168.1.19:5000/api/Persona'),
+          fetch('http://192.168.1.19:5000/api/Cuadrilla'),
         ]);
 
         if (respPersonas.ok) setPersonas(await respPersonas.json());
@@ -66,8 +66,8 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
       setCargandoResultados(true);
       try {
         const url = modo === 'persona'
-          ? `http://123.123.123.32:5000/api/AsignacionHerramienta/persona/${seleccionId}`
-          : `http://123.123.123.32:5000/api/AsignacionHerramienta/cuadrilla/${seleccionId}`;
+          ? `http://192.168.1.19:5000/api/AsignacionHerramienta/persona/${seleccionId}`
+          : `http://192.168.1.19:5000/api/AsignacionHerramienta/cuadrilla/${seleccionId}`;
 
         const response = await fetch(url);
         if (response.ok) {
