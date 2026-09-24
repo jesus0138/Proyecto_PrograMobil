@@ -8,6 +8,7 @@ import { RootStackParamList } from '../Navigation/AppNavigator';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../Store/Store';
 import { setHerramientas } from '../Store/HerramientasSlide';
+import { API_URL } from '../Store/config';
 
 type AsignacionScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Asignacion'>;
 
@@ -32,12 +33,15 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
   const [cantidad, setCantidad] = useState('');
   const [enviando, setEnviando] = useState(false);
 
+  const obtenerStockDisponible = (herramienta: typeof herramientas[number]) =>
+    Math.max(0, herramienta.stock - (herramienta.danado || 0) - (herramienta.prestadoActivo || 0));
+
   useEffect(() => {
     const cargarDatos = async () => {
       try {
         const [respPersonas, respHerramientas] = await Promise.all([
-          fetch('http://192.168.1.19:5000/api/Persona'),
-          fetch('http://192.168.1.19:5000/api/Herramientas/con-disponibilidad'),
+          fetch(`${API_URL}/api/Persona`),
+          fetch(`${API_URL}/api/Herramientas`),
         ]);
 
         if (respPersonas.ok) {
@@ -90,7 +94,7 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
     setEnviando(true);
 
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta', {
+      const response = await fetch(`${API_URL}/api/AsignacionHerramienta`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -149,7 +153,7 @@ export default function AsignacionScreen({ navigation }: { navigation: Asignacio
             {herramientas.map((herramienta) => (
               <Picker.Item
                 key={herramienta.id}
-                label={`${herramienta.nombre} (stock: ${herramienta.disponible})`}
+                label={`${herramienta.nombre} (stock: ${obtenerStockDisponible(herramienta)})`}
                 value={herramienta.id}
               />
             ))}

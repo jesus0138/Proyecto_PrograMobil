@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ConfirmarReintegro'>;
 
@@ -40,8 +41,8 @@ export default function ConfirmarReintegroScreen({ route, navigation }: Props) {
     setEnviando(true);
     try {
       const url = tipo === 'herramienta'
-        ? `http://192.168.1.19:5000/api/AsignacionHerramienta/${id}/devolver`
-        : `http://192.168.1.19:5000/api/AsignacionCarro/${id}/devolver`;
+        ? `${API_URL}/api/AsignacionHerramienta/${id}/devolver`
+        : `${API_URL}/api/AsignacionCarro/${id}/devolver`;
 
       const response = await fetch(url, {
         method: tipo === 'herramienta' ? 'PUT' : 'PATCH',

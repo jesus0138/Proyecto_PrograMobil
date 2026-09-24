@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -46,7 +47,7 @@ export default function RegisterScreen({ navigation }: { navigation: RegisterScr
     setCargando(true);
 
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/Usuario', {
+      const response = await fetch(`${API_URL}/api/Usuario`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

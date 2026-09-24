@@ -1,0 +1,1 @@
+export const API_URL = 'https://inventario-api-jesusguzman-d2f4cchwa3azffe3.westus-01.azurewebsites.net';

@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
-import VerAsignacionesScreen from './VerAsignaciones';
+
 
 type HerramientasScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Herramientas'>;
 
@@ -70,6 +70,21 @@ export default function HerramientasScreen({ navigation }: { navigation: Herrami
   <View style={styles.opcionTexto}>
     <Text style={styles.opcionTitulo}>Ver Asignaciones</Text>
     <Text style={styles.opcionDescripcion}>Consulta el historial de préstamos</Text>
+  </View>
+  <MaterialIcons name="chevron-right" size={26} color="#999" />
+</TouchableOpacity>
+{/* Botón: Nueva Herramienta / Aumentar Stock */}
+<TouchableOpacity
+  style={styles.opcionCard}
+  activeOpacity={0.8}
+  onPress={() => navigation.navigate('NuevaHerramienta')}
+>
+  <View style={[styles.iconoCircular, { backgroundColor: '#009688' }]}>
+    <MaterialIcons name="add-box" size={28} color="white" />
+  </View>
+  <View style={styles.opcionTexto}>
+    <Text style={styles.opcionTitulo}>Nueva Herramienta / Stock</Text>
+    <Text style={styles.opcionDescripcion}>Agrega o aumenta inventario</Text>
   </View>
   <MaterialIcons name="chevron-right" size={26} color="#999" />
 </TouchableOpacity>

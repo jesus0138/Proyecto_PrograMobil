@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type ReporteScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Reporte'>;
 
@@ -14,10 +15,13 @@ type Cuadrilla = { id: number; numero: number; sector: string };
 type AsignacionHerramientaActiva = {
   id: number;
   herramienta: { nombre: string; marca: string };
-  persona: { nombre: string };
-  cuadrilla: { numero: number; sector: string };
+  persona: { id: number; nombre: string };
+  cuadrilla: { id: number; numero: number; sector: string };
+  personaId?: number;
+  cuadrillaId?: number;
   cantidad: number;
   fechaAsignacion: string;
+  fechaDevolucion?: string | null;
 };
 
 type AsignacionCarroActiva = {
@@ -50,8 +54,8 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
     const cargarListas = async () => {
       try {
         const [respPersonas, respCuadrillas] = await Promise.all([
-          fetch('http://123.123.123.32:5000/api/Persona'),
-          fetch('http://123.123.123.32:5000/api/Cuadrilla'),
+          fetch(`${API_URL}/api/Persona`),
+          fetch(`${API_URL}/api/Cuadrilla`),
         ]);
 
         if (respPersonas.ok) setPersonas(await respPersonas.json());
@@ -77,22 +81,25 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
     const cargarResultados = async () => {
       setCargandoResultados(true);
       try {
-        const urlHerramientas = modo === 'persona'
-          ? `http://192.168.1.19:5000/api/AsignacionHerramienta/persona/${seleccionId}`
-          : `http://192.168.1.19:5000/api/AsignacionHerramienta/cuadrilla/${seleccionId}`;
-
         const urlCarros = modo === 'persona'
-          ? `http://192.168.1.19:5000/api/AsignacionCarro/persona/${seleccionId}`
-          : `http://192.168.1.19:5000/api/AsignacionCarro/cuadrilla/${seleccionId}`;
+          ? `${API_URL}/api/AsignacionCarro/persona/${seleccionId}`
+          : `${API_URL}/api/AsignacionCarro/cuadrilla/${seleccionId}`;
 
         const [respHerramientas, respCarros] = await Promise.all([
-          fetch(urlHerramientas),
+          fetch(`${API_URL}/api/AsignacionHerramienta`),
           fetch(urlCarros),
         ]);
 
-        const herramientas: AsignacionHerramientaActiva[] = respHerramientas.ok
+        const todasLasHerramientas: AsignacionHerramientaActiva[] = respHerramientas.ok
           ? await respHerramientas.json()
           : [];
+        const herramientas = todasLasHerramientas.filter((asignacion) => {
+          const idRelacionado = modo === 'persona'
+            ? asignacion.persona?.id ?? asignacion.personaId
+            : asignacion.cuadrilla?.id ?? asignacion.cuadrillaId;
+
+          return idRelacionado === seleccionId && asignacion.fechaDevolucion == null;
+        });
 
         const carros: AsignacionCarroActiva[] = respCarros.ok
           ? await respCarros.json()

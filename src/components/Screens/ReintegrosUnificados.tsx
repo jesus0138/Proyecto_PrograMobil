@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type ReintegrosUnificadosNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ReintegrosUnificados'>;
 
@@ -41,8 +42,8 @@ export default function ReintegrosUnificados({ navigation }: { navigation: Reint
   const cargarActivas = async () => {
     try {
       const [respHerramientas, respCarros] = await Promise.all([
-        fetch('http://192.168.1.19:5000/api/AsignacionHerramienta/activas'),
-        fetch('http://192.168.1.19:5000/api/AsignacionCarro/activas'),
+        fetch(`${API_URL}/api/AsignacionHerramienta/activas`),
+        fetch(`${API_URL}/api/AsignacionCarro/activas`),
       ]);
 
       const herramientasActivas: AsignacionHerramientaActiva[] = respHerramientas.ok

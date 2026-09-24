@@ -6,6 +6,7 @@ import Inicio from './src/components/Screens/LoginScreen';
 
 
 import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/components/Navigation/AppNavigator';
 import { Provider } from 'react-redux';
 import { store } from './src/components/Store/Store';
@@ -16,9 +17,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Provider>
   );
 }

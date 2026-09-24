@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type StockDanadoScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'StockDanadas'>;
 
@@ -31,7 +32,7 @@ export default function StockDanadoScreen({ navigation }: { navigation: StockDan
 
   const cargarDanadas = async () => {
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta/danadas');
+      const response = await fetch(`${API_URL}/api/AsignacionHerramienta/danadas`);
 
       if (!response.ok) {
         console.log('Error al cargar herramientas dañadas:', response.status);

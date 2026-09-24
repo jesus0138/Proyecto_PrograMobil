@@ -1,23 +1,26 @@
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type ReporteScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Reporte'>;
 
 type Persona = { id: number; nombre: string; cargo: string };
-type Cuadrilla = { id: number; numero: number; sector: string };
 
 type AsignacionHerramientaActiva = {
   id: number;
   herramienta: { nombre: string; marca: string };
-  persona: { nombre: string };
-  cuadrilla: { numero: number; sector: string };
+  persona: { id: number; nombre: string };
+  cuadrilla: { id: number; numero: number; sector: string };
+  personaId?: number;
+  cuadrillaId?: number;
   cantidad: number;
   fechaAsignacion: string;
+  fechaDevolucion?: string | null;
 };
 
 type AsignacionCarroActiva = {
@@ -36,10 +39,7 @@ type ItemUnificado = {
 };
 
 export default function ReporteScreen({ navigation }: { navigation: ReporteScreenNavigationProp }) {
-  const [modo, setModo] = useState<'persona' | 'cuadrilla'>('persona');
-
   const [personas, setPersonas] = useState<Persona[]>([]);
-  const [cuadrillas, setCuadrillas] = useState<Cuadrilla[]>([]);
   const [seleccionId, setSeleccionId] = useState<number | null>(null);
 
   const [resultados, setResultados] = useState<ItemUnificado[]>([]);
@@ -49,13 +49,9 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
   useEffect(() => {
     const cargarListas = async () => {
       try {
-        const [respPersonas, respCuadrillas] = await Promise.all([
-          fetch('http://192.168.1.19:5000/api/Persona'),
-          fetch('http://192.168.1.19:5000/api/Cuadrilla'),
-        ]);
+        const respPersonas = await fetch(`${API_URL}/api/Persona`);
 
         if (respPersonas.ok) setPersonas(await respPersonas.json());
-        if (respCuadrillas.ok) setCuadrillas(await respCuadrillas.json());
       } catch (error) {
         console.log('Error al cargar listas:', error);
       } finally {
@@ -67,32 +63,26 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
   }, []);
 
   useEffect(() => {
-    setSeleccionId(null);
-    setResultados([]);
-  }, [modo]);
-
-  useEffect(() => {
     if (seleccionId === null) return;
 
     const cargarResultados = async () => {
       setCargandoResultados(true);
       try {
-        const urlHerramientas = modo === 'persona'
-          ? `http://192.168.1.19:5000/api/AsignacionHerramienta/persona/${seleccionId}`
-          : `http://192.168.1.19:5000/api/AsignacionHerramienta/cuadrilla/${seleccionId}`;
-
-        const urlCarros = modo === 'persona'
-          ? `http://192.168.1.19:5000/api/AsignacionCarro/persona/${seleccionId}`
-          : `http://192.168.1.19:5000/api/AsignacionCarro/cuadrilla/${seleccionId}`;
+        const urlCarros = `${API_URL}/api/AsignacionCarro/persona/${seleccionId}`;
 
         const [respHerramientas, respCarros] = await Promise.all([
-          fetch(urlHerramientas),
+          fetch(`${API_URL}/api/AsignacionHerramienta`),
           fetch(urlCarros),
         ]);
 
-        const herramientas: AsignacionHerramientaActiva[] = respHerramientas.ok
+        const todasLasHerramientas: AsignacionHerramientaActiva[] = respHerramientas.ok
           ? await respHerramientas.json()
           : [];
+        const herramientas = todasLasHerramientas.filter((asignacion) => {
+          const idRelacionado = asignacion.persona?.id ?? asignacion.personaId;
+
+          return idRelacionado === seleccionId && asignacion.fechaDevolucion == null;
+        });
 
         const carros: AsignacionCarroActiva[] = respCarros.ok
           ? await respCarros.json()
@@ -102,9 +92,7 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
           claveUnica: `h-${a.id}`,
           tipo: 'herramienta',
           titulo: a.herramienta.nombre,
-          subtitulo: modo === 'persona'
-            ? `${a.herramienta.marca} · Cantidad: ${a.cantidad} · Cuadrilla ${a.cuadrilla.numero}`
-            : `${a.herramienta.marca} · Cantidad: ${a.cantidad} · ${a.persona.nombre}`,
+          subtitulo: `${a.herramienta.marca} · Cantidad: ${a.cantidad} · Cuadrilla ${a.cuadrilla.numero}`,
           fechaAsignacion: a.fechaAsignacion,
         }));
 
@@ -112,9 +100,7 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
           claveUnica: `c-${a.id}`,
           tipo: 'carro',
           titulo: `${a.carro.marca} ${a.carro.modelo}`,
-          subtitulo: modo === 'persona'
-            ? `Placa: ${a.carro.placa}`
-            : `Placa: ${a.carro.placa} · ${a.persona.nombre}`,
+          subtitulo: `Placa: ${a.carro.placa}`,
           fechaAsignacion: a.fechaAsignacion,
         }));
 
@@ -127,7 +113,7 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
     };
 
     cargarResultados();
-  }, [seleccionId, modo]);
+  }, [seleccionId]);
 
   if (cargandoListas) {
     return (
@@ -143,38 +129,15 @@ export default function ReporteScreen({ navigation }: { navigation: ReporteScree
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
 
         <Text style={styles.titulo}>Reporte de Asignaciones</Text>
-        <Text style={styles.subtitulo}>Consulta qué tiene actualmente cada persona o cuadrilla</Text>
+        <Text style={styles.subtitulo}>Consulta qué tiene actualmente cada persona</Text>
 
-        <View style={styles.switchContainer}>
-          <TouchableOpacity
-            style={[styles.switchBoton, modo === 'persona' && styles.switchBotonActivo]}
-            onPress={() => setModo('persona')}
-          >
-            <Text style={[styles.switchTexto, modo === 'persona' && styles.switchTextoActivo]}>
-              Por Persona
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.switchBoton, modo === 'cuadrilla' && styles.switchBotonActivo]}
-            onPress={() => setModo('cuadrilla')}
-          >
-            <Text style={[styles.switchTexto, modo === 'cuadrilla' && styles.switchTextoActivo]}>
-              Por Cuadrilla
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.label}>{modo === 'persona' ? 'Selecciona una persona' : 'Selecciona una cuadrilla'}</Text>
+        <Text style={styles.label}>Selecciona una persona</Text>
         <View style={styles.pickerContainer}>
           <Picker selectedValue={seleccionId} onValueChange={(valor) => setSeleccionId(valor)}>
             <Picker.Item label="Selecciona..." value={null} />
-            {modo === 'persona'
-              ? personas.map((p) => (
-                  <Picker.Item key={p.id} label={`${p.nombre} (${p.cargo})`} value={p.id} />
-                ))
-              : cuadrillas.map((c) => (
-                  <Picker.Item key={c.id} label={`Cuadrilla ${c.numero} - ${c.sector}`} value={c.id} />
-                ))}
+            {personas.map((p) => (
+              <Picker.Item key={p.id} label={`${p.nombre} (${p.cargo})`} value={p.id} />
+            ))}
           </Picker>
         </View>
 
@@ -224,11 +187,6 @@ const styles = StyleSheet.create({
   centrado: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ecefb9' },
   titulo: { fontSize: 24, fontWeight: 'bold', color: '#222', marginBottom: 5 },
   subtitulo: { fontSize: 13, color: '#666', marginBottom: 20 },
-  switchContainer: { flexDirection: 'row', backgroundColor: 'white', borderRadius: 10, padding: 4, marginBottom: 20 },
-  switchBoton: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
-  switchBotonActivo: { backgroundColor: '#4CAF50' },
-  switchTexto: { fontSize: 13, fontWeight: 'bold', color: '#666' },
-  switchTextoActivo: { color: 'white' },
   label: { fontSize: 14, fontWeight: 'bold', color: '#333', marginBottom: 7 },
   pickerContainer: {
     borderWidth: 1,

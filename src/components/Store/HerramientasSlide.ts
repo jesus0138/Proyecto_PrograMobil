@@ -4,9 +4,15 @@ export interface Herramientas {
   id: number;
   nombre: string;
   marca: string;
+  modelo: string;
+  tipo: string;
   color: string;
   stock: number;
+  fechaAdquisicion: string;
+  valor: number;
   disponible: number;
+  danado: number;
+  prestadoActivo: number;
 }
 
 interface HerramientasState {

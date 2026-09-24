@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import TabsNavigator from './TabsNavigation';
 import LoginScreen from '../Screens/LoginScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
@@ -19,6 +20,7 @@ import ConfirmarReintegroScreen from '../Screens/ConfirmarReintegro';
 import ReintegrosUnificados from '../Screens/ReintegrosUnificados';
 import AsignacionesScreen from '../Screens/AsignacionesScreen';
 import HistorialCompleto from '../Screens/ReporteG';
+import NuevaHerramienta from '../Screens/NuevaHerramienta';
 
 
 export type RootStackParamList = {
@@ -47,7 +49,7 @@ export type RootStackParamList = {
   ReintegrosUnificados: undefined;
   AsignacionesScreen: undefined;
   HistorialCompleto: undefined;
- 
+  NuevaHerramienta: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -70,7 +72,7 @@ export default function AppNavigator() {
       
       <Stack.Screen 
         name="Home" 
-        component={HomeScreen} 
+        component={TabsNavigator} 
         options={{ headerShown: false }}
       />
       <Stack.Screen 
@@ -153,6 +155,12 @@ export default function AppNavigator() {
         component={HistorialCompleto} 
         options={{ headerShown: false }}
       />
+      <Stack.Screen 
+        name="NuevaHerramienta" 
+        component={NuevaHerramienta} 
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
+
   );
 }

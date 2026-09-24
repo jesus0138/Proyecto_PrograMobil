@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 
 type VerAsignacionesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'VerAsignacionesScreen'>;
 
@@ -25,7 +26,7 @@ export default function VerAsignacionesScreen({ navigation }: { navigation: VerA
 
   const cargarAsignaciones = async () => {
     try {
-      const response = await fetch('http://192.168.1.19:5000/api/AsignacionHerramienta');
+      const response = await fetch(`${API_URL}/api/AsignacionHerramienta`);
 
       if (!response.ok) {
         console.log('Error al cargar asignaciones:', response.status);

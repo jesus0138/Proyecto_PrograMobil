@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView,
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
+import { API_URL } from '../Store/config';
 type CarrosNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Carros'>;
 
 
@@ -21,7 +22,7 @@ interface Formulario {
     asignadoPorUsuarioId: string;
 }
 
-const API_URL = 'http://192.168.1.19:5000/api/AsignacionCarro';
+const RUTA_ASIGNACION = `${API_URL}/api/AsignacionCarro`;
 
 export default function CarrosScreen({ navigation }: { navigation: CarrosNavigationProp })  {
 
@@ -47,7 +48,7 @@ const obtenerAsignaciones = async () => {
         try {
             setCargando(true);
 
-            const respuesta = await fetch(API_URL);
+            const respuesta = await fetch(RUTA_ASIGNACION);
 
             if (!respuesta.ok) {
                 throw new Error('No se pudieron obtener las asignaciones');
@@ -150,7 +151,7 @@ const guardarAsignacion = async () => {
             if (editando === null) {
 
 //Crear
-                respuesta = await fetch(API_URL, {
+                respuesta = await fetch(RUTA_ASIGNACION, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -162,7 +163,7 @@ const guardarAsignacion = async () => {
 
 //Editar
                 respuesta = await fetch(
-                    `${API_URL}/${editando}`,
+                    `${RUTA_ASIGNACION}/${editando}`,
                     {
                         method: 'PUT',
                         headers: {
@@ -225,7 +226,7 @@ const eliminarAsignacion = (id: number) => {
                         try {
 
                             const respuesta = await fetch(
-                                `${API_URL}/${id}`,
+                                `${RUTA_ASIGNACION}/${id}`,
                                 {
                                     method: 'DELETE',
                                 }
@@ -278,7 +279,7 @@ const devolverVehiculo = (id: number) => {
                         try {
 
                             const respuesta = await fetch(
-                                `${API_URL}/${id}/devolver`,
+                                `${RUTA_ASIGNACION}/${id}/devolver`,
                                 {
                                     method: 'PATCH',
                                 }
@@ -305,12 +306,12 @@ const devolverVehiculo = (id: number) => {
                                 'Error',
                                 'No se pudo registrar la devolución.'
                             );
-                    }
+                        }
+                    },
                 },
-            },
-        ]
-    );
-};
+            ]
+        );
+    };
 
 //Formulario
 

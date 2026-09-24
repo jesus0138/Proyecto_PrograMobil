@@ -6,6 +6,7 @@ import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
 import Carros from './Carros';
+import { API_URL } from '../Store/config';
 
 
 //nota importante
@@ -14,7 +15,13 @@ import Carros from './Carros';
 //si se usa un celular físico, no usar localhost.
 //ejemplo: const API_URL = 'http://numero de ip/api/Carro';
 
-const API_URL = 'http://192.168.1.19:5000/api/Carro';
+const RUTA_CARRO = `${API_URL}/api/Carro`;
+const ESTADOS_CARRO = [
+  { valor: 'Bueno', label: 'Buen estado', color: '#4CAF50', icono: 'check-circle' as const },
+  { valor: 'Necesita mantenimiento', label: 'Necesita mantenimiento', color: '#FF9800', icono: 'build' as const },
+  { valor: 'Dañado', label: 'Dañado', color: '#F44336', icono: 'error' as const },
+  { valor: 'En reparación', label: 'En reparación', color: '#9E9E9E', icono: 'construction' as const },
+];
 type AsignacionNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AsignacionCarros'>;
 interface Carro {
     id: number;
@@ -54,7 +61,7 @@ const obtenerVehiculos = async () => {
     try {
       setCargando(true);
 
-      const respuesta = await fetch(API_URL);
+      const respuesta = await fetch(RUTA_CARRO);
 
       if (!respuesta.ok) {
         throw new Error('No se pudieron obtener los vehículos');
@@ -172,7 +179,7 @@ try {
       // EDITAR
       if (editando !== null) {
         respuesta = await fetch(
-          `${API_URL}/${editando.id}`,
+          `${RUTA_CARRO}/${editando.id}`,
           {
             method: 'PUT',
             headers: {
@@ -185,7 +192,7 @@ try {
 
 //CREAR
 else {
-        respuesta = await fetch(API_URL, {
+        respuesta = await fetch(RUTA_CARRO, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -246,7 +253,7 @@ const eliminarVehiculo = (id: number) => {
     onPress: async () => {
             try {
               const respuesta = await fetch(
-                `${API_URL}/${id}`,
+                `${RUTA_CARRO}/${id}`,
                 {
                   method: 'DELETE',
                 }
@@ -423,12 +430,30 @@ if (mostrarFormulario) {
             Estado
           </Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Ej. Bueno, En reparación, en uso"
-            value={estado}
-            onChangeText={setEstado}
-          />
+          <View style={styles.estadosContainer}>
+            {ESTADOS_CARRO.map((opcion) => (
+              <TouchableOpacity
+                key={opcion.valor}
+                style={[
+                  styles.estadoOpcion,
+                  estado === opcion.valor && styles.estadoOpcionSeleccionada,
+                  { borderColor: opcion.color },
+                ]}
+                onPress={() => setEstado(opcion.valor)}
+                activeOpacity={0.8}
+              >
+                <MaterialIcons
+                  name={estado === opcion.valor ? 'radio-button-checked' : 'radio-button-unchecked'}
+                  size={24}
+                  color={opcion.color}
+                />
+                <MaterialIcons name={opcion.icono} size={22} color={opcion.color} />
+                <Text style={[styles.estadoOpcionTexto, { color: opcion.color }]}>
+                  {opcion.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
 
           {/* VALOR */}
 
@@ -990,6 +1015,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
 
     marginBottom: 16,
+  },
+
+  estadosContainer: {
+    marginBottom: 16,
+  },
+
+  estadoOpcion: {
+    minHeight: 52,
+    borderWidth: 1.5,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    marginBottom: 8,
+  },
+
+  estadoOpcionSeleccionada: {
+    backgroundColor: '#f5f5f5',
+    borderWidth: 2,
+  },
+
+  estadoOpcionTexto: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 8,
   },
 
   botonGuardar: {

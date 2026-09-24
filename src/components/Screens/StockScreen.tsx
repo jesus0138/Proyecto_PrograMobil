@@ -7,6 +7,7 @@ import { RootStackParamList } from '../Navigation/AppNavigator';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHerramientas } from '../Store/HerramientasSlide';
 import { RootState, AppDispatch } from '../Store/Store';
+import { API_URL } from '../Store/config';
 
 type StockScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Stock'>;
 
@@ -26,8 +27,8 @@ export default function StockScreen({ navigation }: { navigation: StockScreenNav
   const cargarHerramientas = async () => {
     try {
       const [responseHerramientas, responseDanadas] = await Promise.all([
-        fetch('http://192.168.1.19:5000/api/Herramientas'),
-        fetch('http://192.168.1.19:5000/api/AsignacionHerramienta/danadas'),
+        fetch(`${API_URL}/api/Herramientas`),
+        fetch(`${API_URL}/api/AsignacionHerramienta/danadas`),
       ]);
 
       if (!responseHerramientas.ok) {

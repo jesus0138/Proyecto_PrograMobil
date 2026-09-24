@@ -7,6 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../Navigation/AppNavigator';
 import { useDispatch } from 'react-redux';
 import { setUsuario as setUsuarioRedux } from '../Store/UsuarioSlices';
+import { API_URL } from '../Store/config';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -22,7 +23,7 @@ const handleLogin = async () => {
     }
 
     try {
-        const response = await fetch('http://192.168.1.19:5000/api/Auth', {
+        const response = await fetch(`${API_URL}/api/Auth`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
